@@ -1,0 +1,12 @@
+#!/bin/bash
+# Script to send a magic packet to wake-on-lan over internet
+
+if [ $# != 3 ]; then
+	echo "You need to provide some information of the target as arguments in the following order: "
+	echo " - The MAC adress"
+        echo " - The IP dress"
+	echo " - The UPD port"	
+	exit 1;
+fi
+
+echo -e $(echo $(printf 'f%.0s' {1..12}; printf "$(echo $1 | sed 's/://g')%.0s" {1..16}) | sed -e 's/../\\x&/g') | nc -4u -w1 $2 $3
