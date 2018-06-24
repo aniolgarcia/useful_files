@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 tex_file=$(mktemp) ## Random temp file name
-
+tex_dir=$(mktemp -d) ##Random temp directory
 cat<<EOF >$tex_file   ## Print the tex file header
 \documentclass{article}
 \usepackage{listings}
@@ -37,5 +37,6 @@ while read  i; do                ## Loop through each file
     echo "\lstinputlisting[style=customasm]{$i}" >>$tex_file
 done &&
 echo "\end{document}" >> $tex_file &&
-pdflatex $tex_file -output-directory . && 
-pdflatex $tex_file -output-directory .
+pdflatex  -output-directory=$tex_dir $tex_file && 
+pdflatex  -output-directory=$tex_dir $tex_file &&
+cp $tex_dir/tmp.pdf ./output.pdf
